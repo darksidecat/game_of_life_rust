@@ -1,6 +1,6 @@
-use std::ops::Range;
 use rand;
 use rand::Rng;
+use std::ops::Range;
 
 pub struct GameField {
     pub height: i32,
@@ -27,7 +27,11 @@ impl GameField {
         let mut rng = rand::thread_rng();
         for row in self.current_field.iter_mut() {
             for cell in row.iter_mut() {
-                if rng.gen_range(Range { start: 0_u8, end: 101_u8 }) <= fill_percent {
+                if rng.gen_range(Range {
+                    start: 0_u8,
+                    end: 101_u8,
+                }) <= fill_percent
+                {
                     *cell = 1
                 } else {
                     *cell = 0
@@ -36,16 +40,19 @@ impl GameField {
         }
     }
     fn count_neighbours(&self, i: i32, j: i32) -> u8 {
-        self.current_field[((i - 1 + self.height) % self.height) as usize][j as usize] +
-            self.current_field[((i - 1 + self.height) % self.height) as usize][((j - 1 + self.width) % self.width) as usize] +
-            self.current_field[((i - 1 + self.height) % self.height) as usize][((j + 1 + self.width) % self.width) as usize] +
-            self.current_field[i as usize][((j - 1 + self.width) % self.width) as usize] +
-            self.current_field[((i + 1 + self.height) % self.height) as usize][j as usize] +
-            self.current_field[((i + 1 + self.height) % self.height) as usize][((j + 1 + self.width) % self.width) as usize] +
-            self.current_field[((i + 1 + self.height) % self.height) as usize][((j - 1 + self.width) % self.width) as usize] +
-            self.current_field[i as usize][((j + 1 + self.width) % self.width) as usize]
+        self.current_field[((i - 1 + self.height) % self.height) as usize][j as usize]
+            + self.current_field[((i - 1 + self.height) % self.height) as usize]
+                [((j - 1 + self.width) % self.width) as usize]
+            + self.current_field[((i - 1 + self.height) % self.height) as usize]
+                [((j + 1 + self.width) % self.width) as usize]
+            + self.current_field[i as usize][((j - 1 + self.width) % self.width) as usize]
+            + self.current_field[((i + 1 + self.height) % self.height) as usize][j as usize]
+            + self.current_field[((i + 1 + self.height) % self.height) as usize]
+                [((j + 1 + self.width) % self.width) as usize]
+            + self.current_field[((i + 1 + self.height) % self.height) as usize]
+                [((j - 1 + self.width) % self.width) as usize]
+            + self.current_field[i as usize][((j + 1 + self.width) % self.width) as usize]
     }
-
 
     pub fn update_field(&mut self) {
         for i in 0_i32..self.height {
@@ -56,10 +63,11 @@ impl GameField {
                 let stay_alive = is_alive && (count_neighbours == 2 || count_neighbours == 3);
                 let born = !is_alive && count_neighbours == 3;
 
-                self.next_field[i as usize][j as usize] = if stay_alive || born { 1_u8 } else { 0_u8 };
+                self.next_field[i as usize][j as usize] =
+                    if stay_alive || born { 1_u8 } else { 0_u8 };
             }
-        };
+        }
 
-        std::mem::swap(&mut self.current_field , &mut self.next_field);
+        std::mem::swap(&mut self.current_field, &mut self.next_field);
     }
 }

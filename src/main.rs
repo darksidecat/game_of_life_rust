@@ -20,7 +20,6 @@ struct Cli {
     filling: u8,
 }
 
-
 fn main() {
     let args = Cli::parse();
 

@@ -1,20 +1,23 @@
+use crate::game_of_life::GameField;
+use crossterm::style::{Color, SetForegroundColor};
+use crossterm::{cursor, ExecutableCommand};
 use std::io::stdout;
 use std::thread::sleep;
 use std::time::Duration;
-use crossterm::{cursor, ExecutableCommand};
-use crossterm::style::{Color, SetForegroundColor};
-use crate::game_of_life::GameField;
-
 
 pub fn prepare_console() {
     let mut stdout = stdout();
     match stdout.execute(cursor::Hide) {
         Ok(_) => (),
-        Err(error) => { println!("Failed to hide cursor. {}", error) }
+        Err(error) => {
+            println!("Failed to hide cursor. {}", error)
+        }
     };
     match stdout.execute(SetForegroundColor(Color::Green)) {
         Ok(_) => (),
-        Err(error) => { println!("Failed to set background color. {}", error) }
+        Err(error) => {
+            println!("Failed to set background color. {}", error)
+        }
     }
 }
 
@@ -32,6 +35,6 @@ pub fn draw_field(field: &Vec<Vec<u8>>) {
             buffer.push_str(if *cell == 1_u8 { "#" } else { " " });
         }
         buffer.push_str("\n");
-    };
+    }
     println!("{}", &buffer);
 }
