@@ -6,6 +6,7 @@ pub struct GameField {
     pub height: i32,
     pub width: i32,
     current_field: Vec<Vec<u8>>,
+    next_field: Vec<Vec<u8>>,
 }
 
 impl GameField {
@@ -14,6 +15,7 @@ impl GameField {
             height,
             width,
             current_field: vec![vec![0; width as usize]; height as usize],
+            next_field: vec![vec![0; width as usize]; height as usize],
         }
     }
 
@@ -46,8 +48,6 @@ impl GameField {
 
 
     pub fn update_field(&mut self) {
-        let mut next_field = vec![vec![0; self.width as usize]; self.height as usize];
-
         for i in 0_i32..self.height {
             for j in 0_i32..self.width {
                 let is_alive = self.current_field[i as usize][j as usize] == 1_u8;
@@ -56,9 +56,10 @@ impl GameField {
                 let stay_alive = is_alive && (count_neighbours == 2 || count_neighbours == 3);
                 let born = !is_alive && count_neighbours == 3;
 
-                next_field[i as usize][j as usize] = if stay_alive || born { 1_u8 } else { 0_u8 };
+                self.next_field[i as usize][j as usize] = if stay_alive || born { 1_u8 } else { 0_u8 };
             }
         };
-        self.current_field = next_field
+
+        std::mem::swap(&mut self.current_field , &mut self.next_field);
     }
 }
