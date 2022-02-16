@@ -22,7 +22,7 @@ pub fn prepare_console() {
     clearscreen::clear().expect("Failed to clear display");
 }
 
-pub fn reset_cursor(){
+pub fn reset_cursor() {
     match stdout().execute(cursor::MoveTo(0, 0)) {
         Ok(_) => (),
         Err(error) => {
@@ -37,7 +37,6 @@ pub fn render_field(game: &mut GameField, sleep_time: u64) {
     sleep(Duration::from_millis(sleep_time));
     reset_cursor();
 }
-
 
 pub fn draw_field(field: &Vec<Vec<Cell>>) {
     let mut buffer = String::new();
