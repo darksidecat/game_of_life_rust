@@ -19,14 +19,25 @@ pub fn prepare_console() {
             println!("Failed to set background color. {}", error)
         }
     }
+    clearscreen::clear().expect("Failed to clear display");
+}
+
+pub fn reset_cursor(){
+    match stdout().execute(cursor::MoveTo(0, 0)) {
+        Ok(_) => (),
+        Err(error) => {
+            println!("Failed to move cursor. {}", error)
+        }
+    }
 }
 
 pub fn render_field(game: &mut GameField, sleep_time: u64) {
     game.update_field();
     draw_field(game.current_field());
     sleep(Duration::from_millis(sleep_time));
-    clearscreen::clear().expect("Failed to clear display");
+    reset_cursor();
 }
+
 
 pub fn draw_field(field: &Vec<Vec<Cell>>) {
     let mut buffer = String::new();
