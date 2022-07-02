@@ -11,3 +11,4 @@ rand = "0.8.4"
 clearscreen = "1.0.9"
 clap = { version = "3.0.14", features = ["derive"] }
 crossterm = "0.23.0"
+ctrlc = "3.2.2"

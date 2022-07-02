@@ -22,6 +22,16 @@ pub fn prepare_console() {
     clearscreen::clear().expect("Failed to clear display");
 }
 
+pub fn show_cursor_on_exit() {
+    let mut stdout = stdout();
+    match stdout.execute(cursor::Show) {
+        Ok(_) => (),
+        Err(error) => {
+            println!("Failed to show cursor. {}", error)
+        }
+    };
+}
+
 pub fn reset_cursor() {
     match stdout().execute(cursor::MoveTo(0, 0)) {
         Ok(_) => (),
